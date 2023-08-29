@@ -2,6 +2,7 @@ import nfl_data_py as nfl
 import pandas as pd
 import numpy as np
 
+
 year_data = nfl.import_pbp_data([2022], downcast=True, cache=False, alt_path=None)
 
 pd.set_option('display.max_columns', None)
@@ -9,7 +10,7 @@ pd.set_option('display.max_columns', None)
 year_data['distance'] = pd.cut(year_data['ydstogo'], [0, 3, 7, 100], labels=['Short', 'Medium', 'Long'])
 
 #print(year_data.columns.tolist())
-df = year_data.drop(['play_id', 'posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap', 'yardline_100', 'away_team', 'old_game_id', 
+df = year_data.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap', 'yardline_100', 'away_team', 'old_game_id', 
                     'side_of_field', 'game_date', 'quarter_seconds_remaining', 'game_seconds_remaining', 'drive', 'sp', 'qtr', 'time', 'ydsnet', 'desc',
                     'yards_gained', 'qb_kneel', 'qb_spike', 'pass_length', 'pass_location', 'air_yards', 'yards_after_catch', 'run_location', 'field_goal_result',
                     'kick_distance', 'extra_point_result', 'two_point_conv_result', 'home_timeouts_remaining', 'away_timeouts_remaining', 'timeout',
@@ -59,7 +60,7 @@ df = year_data.drop(['play_id', 'posteam_type', 'home_team', 'quarter_end', 'wpa
                     'end_clock_time', 'end_yard_line', 'fixed_drive', 'fixed_drive_result', 'drive_real_start_time', 'drive_play_count', 'drive_time_of_possession', 
                     'drive_first_downs', 'drive_ended_with_score', 'drive_quarter_start', 'drive_quarter_end', 'drive_yards_penalized', 'drive_start_transition', 
                     'drive_end_transition', 'drive_game_clock_start', 'drive_game_clock_end', 'drive_start_yard_line', 'drive_end_yard_line', 
-                    'drive_play_id_started', 'drive_play_id_ended', 'away_score', 'home_score', 'location', 'result', 'total', 'spread_line', 'total_line', 
+                    'drive_play_id_ended', 'away_score', 'home_score', 'location', 'result', 'total', 'spread_line', 'total_line', 
                     'div_game', 'roof', 'surface', 'temp', 'wind', 'home_coach', 'away_coach', 'stadium_id', 'game_stadium', 'aborted_play', 'success', 
                     'passer', 'passer_jersey_number', 'rusher', 'rusher_jersey_number', 'receiver', 'receiver_jersey_number', 'first_down', 'passer_id', 
                     'rusher_id', 'receiver_id', 'name', 'jersey_number', 'id', 'fantasy_player_name', 'fantasy_player_id', 'fantasy', 'fantasy_id', 
@@ -68,11 +69,13 @@ df = year_data.drop(['play_id', 'posteam_type', 'home_team', 'quarter_end', 'wpa
 
 print(df.head())
 
+#filtering
 df_bal = df.loc[(df['possession_team'] == 'NYG') & 
             (df['play'] == 1) &
             (df['special'] == 0) &
             (df['week'] >= 15)]
 
+#Basic personnel percentages
 pivot = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
                                 index=['down', 'distance', 'offense_personnel'], 
                                 #columns=['down'], 
@@ -81,6 +84,7 @@ pivot = np.round(pd.pivot_table(df_bal, values=['pass','rush'],
 
 print(pivot)
 
+#Basic offensive personnel
 pivot2 = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
                                 index=['down', 'distance', 'offense_formation'], 
                                 #columns=['down'], 
@@ -88,3 +92,24 @@ pivot2 = np.round(pd.pivot_table(df_bal, values=['pass','rush'],
                                 fill_value=0),2)
 
 print(pivot2)
+
+
+'''passing = nfl.import_ngs_data('rushing', [2022])
+#columns : required, type of data (passing, rushing, receiving)
+
+pd.set_option('display.max_columns', None)
+
+print(passing.head())'''
+
+#print(nfl.see_weekly_cols())
+
+'''win = nfl.import_sc_lines([2020])
+
+print(win.head())'''
+
+'''dc = nfl.import_depth_charts([2022])
+
+print(dc.describe())'''
+
+'''draft = nfl.import_draft_values()
+print(draft.head(35))'''
