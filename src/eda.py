@@ -92,9 +92,19 @@ df_bal = df.loc[(df['possession_team'] == 'NYG') &
 
 
 
-print(df.head())
+print(df[['posteam', 'score_differential']].head(50))
 
 #Basic personnel percentages
+'''
+    Offense personnel => % pass by situation
+    Offense formation => % pass by situation
+    Offense personnel and formation => % pass by situation
+
+    Defense personnel => % offense personnel by situation
+    Defense personnel => % offense formation by situation
+    Defense personnel => % offense personnel and formation by situation
+    Defense personnel => % blitz by situation
+'''
 pivot = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
                                 index=['Down', 'Distance', 'offense_personnel'], 
                                 #columns=['Down'], 
