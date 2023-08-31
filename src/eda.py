@@ -7,7 +7,9 @@ year_data = nfl.import_pbp_data([2022], downcast=True, cache=False, alt_path=Non
 
 pd.set_option('display.max_columns', None)
 
-year_data['distance'] = pd.cut(year_data['ydstogo'], [0, 3, 7, 100], labels=['Short', 'Medium', 'Long'])
+year_data['Distance'] = pd.cut(year_data['ydstogo'], [0, 3, 6, 100], labels=['Short', 'Medium', 'Long'])
+year_data['Down'] = year_data['down'].astype(str)
+year_data['Down'] = year_data.apply(lambda row: 'P 1.0' if row['drive_play_id_started'] == row['play_id'] else row['Down'], axis=1)
 
 #print(year_data.columns.tolist())
 df = year_data.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap', 'yardline_100', 'away_team', 'old_game_id', 
@@ -67,18 +69,35 @@ df = year_data.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap
                     'out_of_bounds', 'home_opening_kickoff', 'qb_epa', 'xyac_epa', 'xyac_mean_yardage', 'xyac_median_yardage', 'xyac_success', 'xyac_fd', 
                     'xpass', 'pass_oe', 'nflverse_game_id', 'players_on_play', 'offense_players', 'defense_players', 'n_offense', 'n_defense'], axis='columns')
 
-print(df.head())
+#print(df.columns.tolist())
+
+#for line in df:
+#    if ('drive_play_id_started')
+
+
 
 #filtering
+'''
+    Open Field => df['drive_inside20'] == 0
+    Red Zone => df['drive_inside20'] == 1
+    2 min => df['half_seconds_remaining'] <= 120
+    4 min => df['half_seconds_remaining'] <= 240 & df['score_differential'] > 0 & df['game_half'] == 'Half2'
+    Clutch time => df['half_seconds_remaining'] <= 120 & df['score_differential'] < 0 & df['game_half'] == 'Half2'
+'''
 df_bal = df.loc[(df['possession_team'] == 'NYG') & 
             (df['play'] == 1) &
             (df['special'] == 0) &
-            (df['week'] >= 15)]
+            (df['week'].isin([15,16,17])) &
+            (df['drive_inside20'] == 1)]
+
+
+
+print(df.head())
 
 #Basic personnel percentages
 pivot = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
-                                index=['down', 'distance', 'offense_personnel'], 
-                                #columns=['down'], 
+                                index=['Down', 'Distance', 'offense_personnel'], 
+                                #columns=['Down'], 
                                 aggfunc=np.mean,
                                 fill_value=0),2)
 
@@ -86,7 +105,7 @@ print(pivot)
 
 #Basic offensive personnel
 pivot2 = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
-                                index=['down', 'distance', 'offense_formation'], 
+                                index=['Down', 'Distance', 'offense_formation'], 
                                 #columns=['down'], 
                                 aggfunc=np.mean,
                                 fill_value=0),2)
