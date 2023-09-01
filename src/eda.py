@@ -150,3 +150,6 @@ print(dc.describe())'''
 
 '''draft = nfl.import_draft_values()
 print(draft.head(35))'''
+
+'''weekly = nfl.import_weekly_data([2022])
+print(weekly.columns.tolist())'''
