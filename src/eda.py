@@ -69,7 +69,7 @@ df = year_data.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap
                     'out_of_bounds', 'home_opening_kickoff', 'qb_epa', 'xyac_epa', 'xyac_mean_yardage', 'xyac_median_yardage', 'xyac_success', 'xyac_fd', 
                     'xpass', 'pass_oe', 'nflverse_game_id', 'players_on_play', 'offense_players', 'defense_players', 'n_offense', 'n_defense'], axis='columns')
 
-#print(df.columns.tolist())
+print(df.columns.tolist())
 
 #for line in df:
 #    if ('drive_play_id_started')
@@ -84,7 +84,7 @@ df = year_data.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap
     4 min => df['half_seconds_remaining'] <= 240 & df['score_differential'] > 0 & df['game_half'] == 'Half2'
     Clutch time => df['half_seconds_remaining'] <= 120 & df['score_differential'] < 0 & df['game_half'] == 'Half2'
 '''
-df_bal = df.loc[(df['possession_team'] == 'NYG') & 
+df_bal = df.loc[(df['defteam'] == 'NYG') & # 'posteam'
             (df['play'] == 1) &
             (df['special'] == 0) &
             (df['week'].isin([15,16,17])) &
@@ -92,7 +92,7 @@ df_bal = df.loc[(df['possession_team'] == 'NYG') &
 
 
 
-print(df[['posteam', 'score_differential']].head(50))
+#print(df[['posteam', 'score_differential']].head(50))
 
 #Basic personnel percentages
 '''
@@ -105,8 +105,16 @@ print(df[['posteam', 'score_differential']].head(50))
     Defense personnel => % offense personnel and formation by situation
     Defense personnel => % blitz by situation
 '''
-pivot = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
+'''pivot = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
                                 index=['Down', 'Distance', 'offense_personnel'], 
+                                #columns=['Down'], 
+                                aggfunc=np.mean,
+                                fill_value=0),2)
+
+print(pivot)'''
+
+pivot = np.round(pd.pivot_table(df_bal, values=['number_of_pass_rushers','defenders_in_box'], 
+                                index=['Down', 'Distance', 'defense_personnel'], 
                                 #columns=['Down'], 
                                 aggfunc=np.mean,
                                 fill_value=0),2)
@@ -120,7 +128,7 @@ pivot2 = np.round(pd.pivot_table(df_bal, values=['pass','rush'],
                                 aggfunc=np.mean,
                                 fill_value=0),2)
 
-print(pivot2)
+#print(pivot2)
 
 
 '''passing = nfl.import_ngs_data('rushing', [2022])
