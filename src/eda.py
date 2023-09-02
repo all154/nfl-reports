@@ -13,7 +13,7 @@ year_data['Down'] = year_data.apply(lambda row: 'P 1.0' if row['drive_play_id_st
 
 #print(year_data.columns.tolist())
 df = year_data.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap', 'yardline_100', 'away_team', 'old_game_id', 
-                    'side_of_field', 'game_date', 'quarter_seconds_remaining', 'game_seconds_remaining', 'drive', 'sp', 'qtr', 'time', 'ydsnet', 'desc',
+                    'side_of_field', 'game_date', 'quarter_seconds_remaining', 'drive', 'sp', 'qtr', 'time', 'ydsnet', 'desc',
                     'yards_gained', 'qb_kneel', 'qb_spike', 'pass_length', 'pass_location', 'air_yards', 'yards_after_catch', 'run_location', 'field_goal_result',
                     'kick_distance', 'extra_point_result', 'two_point_conv_result', 'home_timeouts_remaining', 'away_timeouts_remaining', 'timeout',
                     'timeout_team', 'td_team', 'td_player_name', 'td_player_id', 'posteam_timeouts_remaining', 'defteam_timeouts_remaining',
@@ -81,8 +81,8 @@ print(df.columns.tolist())
     Open Field => df['drive_inside20'] == 0
     Red Zone => df['drive_inside20'] == 1
     2 min => df['half_seconds_remaining'] <= 120
-    4 min => df['half_seconds_remaining'] <= 240 & df['score_differential'] > 0 & df['game_half'] == 'Half2'
-    Clutch time => df['half_seconds_remaining'] <= 120 & df['score_differential'] < 0 & df['game_half'] == 'Half2'
+    4 min => df['game_seconds_remaining'] <= 240 & df['score_differential'] > 0
+    Clutch time => df['game_seconds_remaining'] <= 120 & df['score_differential'] < 0
 '''
 df_bal = df.loc[(df['defteam'] == 'NYG') & # 'posteam'
             (df['play'] == 1) &
@@ -153,3 +153,13 @@ print(draft.head(35))'''
 
 '''weekly = nfl.import_weekly_data([2022])
 print(weekly.columns.tolist())'''
+
+'''
+    Usage for game searching
+
+    Previous matchups for instance
+'''
+
+schedule = nfl.import_schedules([2022])
+
+print(schedule.head())
