@@ -2,7 +2,7 @@ import nfl_data_py as nfl
 import pandas as pd
 import numpy as np
 
-
+'''
 year_data = nfl.import_pbp_data([2022], downcast=True, cache=False, alt_path=None)
 
 pd.set_option('display.max_columns', None)
@@ -68,8 +68,8 @@ df = year_data.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap
                     'rusher_id', 'receiver_id', 'name', 'jersey_number', 'id', 'fantasy_player_name', 'fantasy_player_id', 'fantasy', 'fantasy_id', 
                     'out_of_bounds', 'home_opening_kickoff', 'qb_epa', 'xyac_epa', 'xyac_mean_yardage', 'xyac_median_yardage', 'xyac_success', 'xyac_fd', 
                     'xpass', 'pass_oe', 'nflverse_game_id', 'players_on_play', 'offense_players', 'defense_players', 'n_offense', 'n_defense'], axis='columns')
-
-print(df.columns.tolist())
+'''
+#print(df.columns.tolist())
 
 #for line in df:
 #    if ('drive_play_id_started')
@@ -84,11 +84,11 @@ print(df.columns.tolist())
     4 min => df['game_seconds_remaining'] <= 240 & df['score_differential'] > 0
     Clutch time => df['game_seconds_remaining'] <= 120 & df['score_differential'] < 0
 '''
-df_bal = df.loc[(df['defteam'] == 'NYG') & # 'posteam'
+'''df_bal = df.loc[(df['defteam'] == 'NYG') & # 'posteam'
             (df['play'] == 1) &
             (df['special'] == 0) &
             (df['week'].isin([15,16,17])) &
-            (df['drive_inside20'] == 1)]
+            (df['drive_inside20'] == 1)]'''
 
 
 
@@ -113,20 +113,20 @@ df_bal = df.loc[(df['defteam'] == 'NYG') & # 'posteam'
 
 print(pivot)'''
 
-pivot = np.round(pd.pivot_table(df_bal, values=['number_of_pass_rushers','defenders_in_box'], 
+'''pivot = np.round(pd.pivot_table(df_bal, values=['number_of_pass_rushers','defenders_in_box'], 
                                 index=['Down', 'Distance', 'defense_personnel'], 
                                 #columns=['Down'], 
                                 aggfunc=np.mean,
                                 fill_value=0),2)
 
-print(pivot)
+print(pivot)'''
 
 #Basic offensive personnel
-pivot2 = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
+'''pivot2 = np.round(pd.pivot_table(df_bal, values=['pass','rush'], 
                                 index=['Down', 'Distance', 'offense_formation'], 
                                 #columns=['down'], 
                                 aggfunc=np.mean,
-                                fill_value=0),2)
+                                fill_value=0),2)'''
 
 #print(pivot2)
 
@@ -160,6 +160,20 @@ print(weekly.columns.tolist())'''
     Previous matchups for instance
 '''
 
-schedule = nfl.import_schedules([2022])
+schedule = nfl.import_schedules(range(2005,2023))
 
-print(schedule.head())
+#print(schedule.head())
+#print(schedule.columns)
+
+filtered_schedule = schedule[((schedule['home_team'] == 'KC') & (schedule['away_team'] == 'DET')) |
+                             ((schedule['home_team'] == 'DET') & (schedule['away_team'] == 'KC'))]
+
+# Sort by gameday and get the latest three games
+result = filtered_schedule.sort_values(by='gameday', ascending=False).head(3)
+
+columns_to_show = ['gameday', 'home_team', 'away_team', 'home_score', 'away_score']
+
+# Filter the DataFrame for those columns
+subset_result = result[columns_to_show]
+
+print(subset_result)
