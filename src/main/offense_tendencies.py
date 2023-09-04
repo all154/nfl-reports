@@ -7,3 +7,9 @@ def pass_rate_by_personnel():
     Description:
     '''
     pass
+
+def pass_rate_by_formation():
+    '''
+    Description:
+    '''
+    pass
