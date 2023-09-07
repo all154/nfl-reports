@@ -14,6 +14,9 @@ def create_distance(df):
         Medium: 4 to 6 yards to go
         Long: More than 7 yards to go
     '''
+    # TODO
+    # Add check 'distance' feature
+    
     df['distance'] = pd.cut(year_data['ydstogo'], [0, 3, 6, 100], labels=['Short', 'Medium', 'Long'])
 
     return df
