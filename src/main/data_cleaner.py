@@ -17,7 +17,7 @@ def create_distance(df):
     # TODO
     # Add check 'distance' feature
 
-    df['distance'] = pd.cut(year_data['ydstogo'], [0, 3, 6, 100], labels=['Short', 'Medium', 'Long'])
+    df['distance'] = pd.cut(df['ydstogo'], [0, 3, 6, 100], labels=['Short', 'Medium', 'Long'])
 
     return df
 
