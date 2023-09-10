@@ -36,3 +36,13 @@ def create_downs(df):
         4th: Fourth down
     '''
     #TODO
+    #Check if there is 'down' feature
+    
+    df['Down'] = df['down'].astype(str)
+    df['Down'] = df.apply(lambda row: 'P1st' if row['drive_play_id_started'] == row['play_id'] else row['Down'], axis=1)
+    df['Down'] = df.apply(lambda row: 'E1st' if row['Down'] == '1.0' else row['Down'], axis=1)
+    df['Down'] = df.apply(lambda row: '2nd' if row['Down'] == '2.0' else row['Down'], axis=1)
+    df['Down'] = df.apply(lambda row: '3rd' if row['Down'] == '3.0' else row['Down'], axis=1)
+    df['Down'] = df.apply(lambda row: '4th' if row['Down'] == '4.0' else row['Down'], axis=1)
+
+    return df
