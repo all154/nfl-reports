@@ -14,7 +14,7 @@ def pass_rate_by_personnel(team, situation, side):
             'RZ': red zone plays only
             '2M': 2 minute offense
             '4M': 4 minute offense
-            'CLUT': clutch time (offense only)
+            'CLUT': clutch time (offense only - losing in the last 2 minutes)
         
         side (string): 
             'OFF': offensive personnel
