@@ -114,3 +114,24 @@ def create_downs(df):
     df['Down'] = df.apply(lambda row: '4th' if row['Down'] == '4.0' else row['Down'], axis=1)
 
     return df
+
+def clean_offense_personnel(df):
+    '''
+        Usage of common personnel notation
+
+        df(dataframe): a play by play dataframe from nfl_data_py containing 'offense_personnel' feature
+
+        Returns: a dataframe with correct 'offense_personnel' notation
+
+        First digit = # of RBs
+        Second digit = # of TEs
+
+        Example: 12 personnel = 1 RB, 2 TE, 2 WR
+
+        Exceptions:
+        Cougar = 00 personnel
+        Y-Cougar = 01 personnel
+        Jumbo = more than 5 OL
+    '''
+    #TODO
+    pass
