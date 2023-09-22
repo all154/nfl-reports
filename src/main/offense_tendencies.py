@@ -2,6 +2,13 @@ import nfl_data_py as nfl
 import pandas as pd
 import numpy as np
 
+def situation():
+    '''
+        Slice data for each situation
+    '''
+    #TODO
+    pass
+
 def pass_rate_by_personnel(team, situation, side):
     '''
         Pass and rush rate split by personnel
