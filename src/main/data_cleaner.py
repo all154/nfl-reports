@@ -2,6 +2,17 @@ import nfl_data_py as nfl
 import pandas as pd
 import numpy as np
 
+def clean_tendencies(df):
+    '''
+        Drop all features that will not be used for tendency studies
+
+        df(dataframe): a play by play dataframe from nfl_data_py
+
+        Returns: a dataframe with levant only features
+    '''
+    #TODO
+    pass
+
 def create_distance(df):
     '''
         Group yards to go into 3 groups: Short, Medium and Long
