@@ -4,7 +4,19 @@ import numpy as np
 
 def situation(df, situation):
     '''
-        Slice data for each situation
+        Slice data for each situation in a football game
+
+        df(dataframe): a play by play dataframe from nfl_data_py
+
+        situation (string): different situation of a football match
+            'COMP': all plays
+            'OF': open field
+            'RZ': red zone plays only
+            '2M': 2 minute offense
+            '4M': 4 minute offense
+            'CLUT': clutch time (offense only - losing in the last 2 minutes)
+
+        Returns: a dataframe with data with the situation given
     '''
     situations_dict = {
         'COMP': lambda df: df,
