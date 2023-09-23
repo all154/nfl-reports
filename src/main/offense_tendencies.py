@@ -2,12 +2,24 @@ import nfl_data_py as nfl
 import pandas as pd
 import numpy as np
 
-def situation():
+def situation(df, situation):
     '''
         Slice data for each situation
     '''
-    #TODO
-    pass
+    situations_dict = {
+        'COMP': lambda df: df,
+        'OF': lambda df: df[df['drive_inside20'] == 0],
+        'RZ': lambda df: df[df['drive_inside20'] == 1],
+        '2M': lambda df: df[df['half_seconds_remaining'] <= 120],
+        '4M': lambda df: df[df['game_seconds_remaining'] <= 240 & df['score_differential'] > 0], 
+        'CLUT': lambda df: df[df['game_seconds_remaining'] <= 120 & df['score_differential'] < 0]
+    }
+    
+    if situation in situations_dict:
+        return situations_dict[situation](df)
+    else:
+        raise ValueError(f"Unknown situation: {situation}")
+
 
 def pass_rate_by_personnel(team, situation, side):
     '''
