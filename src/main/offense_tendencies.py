@@ -32,20 +32,27 @@ def situation(df, situation):
     else:
         raise ValueError(f"Unknown situation: {situation}")
 
-def team(team, side):
+def team(df, team, side):
     '''
         Slice data for each team and side of a football game
 
         team (string): 3-letter abreviation of NFL team
-        
+
         side (string): 
             'OFF': offensive personnel
             'DEF' for defensive personnel
 
         Returns: a dataframe with data with the situation given
     '''
-    #TODO
-    pass
+    side_dict = {
+        'OFF': lambda df: df[(df['posteam'] == team)],
+        'DEF': lambda df: df[(df['defteam'] == team)]
+    }
+    
+    if side in side_dict:
+        return side_dict[side](df)
+    else:
+        raise ValueError(f"Unknown side: {side}")
 
 def pass_rate_by_personnel(team, situation, side):
     '''
