@@ -36,6 +36,8 @@ def team(df, team, side):
     '''
         Slice data for each team and side of a football game
 
+        df(dataframe): a play by play dataframe from nfl_data_py
+
         team (string): 3-letter abreviation of NFL team
 
         side (string): 
