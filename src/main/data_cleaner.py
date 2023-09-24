@@ -10,7 +10,7 @@ def clean_tendencies(df):
 
         Returns: a dataframe with levant only features
     '''
-    df = df.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap', 'yardline_100', 'away_team', 'old_game_id', 
+    df = df.drop(['posteam_type', 'home_team', 'quarter_end', 'wpa', 'run_gap', 'away_team', 'old_game_id', 'drive_inside20',
                     'side_of_field', 'game_date', 'quarter_seconds_remaining', 'drive', 'sp', 'qtr', 'time', 'ydsnet', 'desc',
                     'yards_gained', 'qb_kneel', 'qb_spike', 'pass_length', 'pass_location', 'air_yards', 'yards_after_catch', 'run_location', 'field_goal_result',
                     'kick_distance', 'extra_point_result', 'two_point_conv_result', 'home_timeouts_remaining', 'away_timeouts_remaining', 'timeout',
