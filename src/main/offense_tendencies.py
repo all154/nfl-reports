@@ -56,9 +56,13 @@ def team(df, team, side):
     else:
         raise ValueError(f"Unknown side: {side}")
 
-def pass_rate_by_personnel(team, situation, side):
+def pass_rate_by_personnel(years, weeks, team, situation, side):
     '''
         Pass and rush rate split by personnel
+
+        years (list): years that data should be retrieved
+
+        weeks (list): weeks that data should be retrived
 
         team (string): 3-letter abreviation of NFL team
 
@@ -76,6 +80,7 @@ def pass_rate_by_personnel(team, situation, side):
 
         Returns: a dataframe with pass and rush rates by down, distance and situation
     '''
+    #TODO
     pass
 
 def pass_rate_by_formation():
