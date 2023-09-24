@@ -47,8 +47,8 @@ def team(df, team, side):
         Returns: a dataframe with data with the situation given
     '''
     side_dict = {
-        'OFF': lambda df: df[(df['posteam'] == team)],
-        'DEF': lambda df: df[(df['defteam'] == team)]
+        'OFF': lambda df: df[(df['posteam'] == team)&(df['special'] == 0)],
+        'DEF': lambda df: df[(df['defteam'] == team)&(df['special'] == 0)]
     }
     
     if side in side_dict:
