@@ -20,7 +20,7 @@ def situation(df, situation):
     '''
     situations_dict = {
         'COMP': lambda df: df,
-        'OF': lambda df: df[df['drive_inside20'] > 20],
+        'OF': lambda df: df[df['yardline_100'] > 20],
         'RZ': lambda df: df[df['yardline_100'] <= 20],
         '2M': lambda df: df[df['half_seconds_remaining'] <= 120],
         '4M': lambda df: df[df['game_seconds_remaining'] <= 240 & df['score_differential'] > 0], 
