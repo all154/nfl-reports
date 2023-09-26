@@ -25,8 +25,8 @@ def situation(df, situation):
         'OF': lambda df: df[df['yardline_100'] > 20],
         'RZ': lambda df: df[df['yardline_100'] <= 20],
         '2M': lambda df: df[df['half_seconds_remaining'] <= 120],
-        '4M': lambda df: df[df['game_seconds_remaining'] <= 240 & df['score_differential'] > 0], 
-        'CLUT': lambda df: df[df['game_seconds_remaining'] <= 120 & df['score_differential'] < 0]
+        '4M': lambda df: df[(df['game_seconds_remaining'] <= 240) & (df['score_differential'] > 0)], 
+        'CLUT': lambda df: df[(df['game_seconds_remaining'] <= 120) & (df['score_differential'] < 0)]
     }
     
     if situation in situations_dict:
