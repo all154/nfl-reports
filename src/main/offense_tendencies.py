@@ -2,6 +2,7 @@ import nfl_data_py as nfl
 import pandas as pd
 import numpy as np
 from data_cleaner import *
+from offense_tendencies import *
 
 def situation(df, situation):
     '''
@@ -57,7 +58,7 @@ def team(df, team, side):
     else:
         raise ValueError(f"Unknown side: {side}")
 
-def pass_rate_by_personnel(years, weeks, team, situation, side):
+def pass_rate_by_personnel(years, weeks, team_name, side, situation_str):
     '''
         Pass and rush rate split by personnel
 
@@ -65,30 +66,31 @@ def pass_rate_by_personnel(years, weeks, team, situation, side):
 
         weeks (list): weeks that data should be retrived
 
-        team (string): 3-letter abreviation of NFL team
+        team_name (string): 3-letter abreviation of NFL team
 
-        situation (string): different situation of a football match
+        side (string): 
+            'OFF': offensive personnel
+            'DEF' for defensive personnel
+
+        situation_str (string): different situation of a football match
             'COMP': all plays
             'OF': open field
             'RZ': red zone plays only
             '2M': 2 minute offense
             '4M': 4 minute offense
             'CLUT': clutch time (offense only - losing in the last 2 minutes)
-        
-        side (string): 
-            'OFF': offensive personnel
-            'DEF' for defensive personnel
 
         Returns: a dataframe with pass and rush rates by down, distance and situation
     '''
     #TODO
     # selecting weeks and years for specific matchups
+
     df = nfl.import_pbp_data(years, downcast=True, cache=False, alt_path=None)
     df = create_distance(df)
     df = create_downs(df)
     df = clean_tendencies(df)
-    df = team(df, team, side)
-    df = situation(df, situation)
+    df = team(df, team_name, side)
+    df = situation(df, situation_str)
 
     pivot = pd.pivot_table(df, values=['pass','rush'], 
                                 index=['Down', 'distance', 'offense_personnel'], 
@@ -96,7 +98,7 @@ def pass_rate_by_personnel(years, weeks, team, situation, side):
                                 aggfunc={'pass': np.mean, 'rush': np.mean, 'distance': len},
                                 fill_value=0)
     
-    # Should create a function to reorder pivot
+    # Should create a function to reorder pivot function
     pivot = pivot.rename(columns={'distance': 'Play Count'})
     pivot = pivot.round(2)
 
