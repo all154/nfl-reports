@@ -126,3 +126,9 @@ def pass_rate_by_personnel_and_formation():
     Description:
     '''
     pass
+
+def man_in_box_by_personnel():
+    '''
+        Description:
+    '''
+    pass
