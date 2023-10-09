@@ -57,6 +57,11 @@ def team(df, team, side):
         return side_dict[side](df)
     else:
         raise ValueError(f"Unknown side: {side}")
+    
+def import_clean_slice(years, weeks, team_name, side):
+    '''
+        Description:
+    '''
 
 def pass_rate_by_personnel(years, weeks, team_name, side, situation_str):
     '''
