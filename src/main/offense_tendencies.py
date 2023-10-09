@@ -125,17 +125,8 @@ def pass_rate_by_personnel(years, weeks, team_name, side, situation_str):
                                 index=['Down', 'distance', side_dict[side]],
                                 aggfunc={'pass': np.mean, 'rush': np.mean, 'distance': len},
                                 fill_value=0)
-    
-    # Should create a function to reorder pivot function
-    pivot = pivot.rename(columns={'distance': 'Play Count'})
-    pivot = pivot.round(2)
 
-    desired_order_down = {'P1st': 0, 'E1st': 1, '2nd': 2, '3rd': 3, '4th': 4}
-    desired_order_distance = {'Long': 0, 'Medium': 1, 'Short': 2}
-
-    pivot['Order_Down'] = pivot.index.get_level_values('Down').map(desired_order_down.get)
-    pivot['Order_Distance'] = pivot.index.get_level_values('distance').map(desired_order_distance.get)
-    pivot = pivot.sort_values(by=['Order_Down', 'Order_Distance']).drop(columns=['Order_Down', 'Order_Distance'])
+    pivot = order_pivot(pivot)
 
     return pivot
 
