@@ -58,10 +58,18 @@ def team(df, team, side):
     else:
         raise ValueError(f"Unknown side: {side}")
     
-def import_clean_slice(years, weeks, team_name, side):
+def import_clean_slice(years, weeks, team_name, side, situation_str):
     '''
         Description:
     '''
+    df = nfl.import_pbp_data(years, downcast=True, cache=False, alt_path=None)
+    df = create_distance(df)
+    df = create_downs(df)
+    df = clean_tendencies(df)
+    df = team(df, team_name, side)
+    df = situation(df, situation_str)
+
+    return df
 
 def pass_rate_by_personnel(years, weeks, team_name, side, situation_str):
     '''
