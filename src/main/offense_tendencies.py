@@ -145,11 +145,25 @@ def pass_rate_by_formation(years, weeks, team_name, situation_str):
 
     return pivot
 
-def pass_rate_by_personnel_and_formation():
+def pass_rate_by_personnel_and_formation(years, weeks, team_name, situation_str):
     '''
     Description:
     '''
-    pass
+    df = import_clean_slice(years, weeks, team_name, 'OFF', situation_str)
+    # TODO
+    '''
+        Slice per offense_personnel
+        Tables are getting too long
+    '''
+
+    pivot = pd.pivot_table(df, values=['pass','rush'], 
+                                index=['Down', 'distance', 'offense_personnel', 'offense_formation'],
+                                aggfunc={'pass': np.mean, 'rush': np.mean, 'distance': len},
+                                fill_value=0)
+    
+    pivot = order_pivot(pivot)
+
+    return pivot
 
 def man_in_box_by_personnel():
     '''
