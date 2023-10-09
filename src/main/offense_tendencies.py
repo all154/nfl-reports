@@ -103,12 +103,7 @@ def pass_rate_by_personnel(years, weeks, team_name, side, situation_str):
         'DEF': 'defense_personnel'
     }
 
-    df = nfl.import_pbp_data(years, downcast=True, cache=False, alt_path=None)
-    df = create_distance(df)
-    df = create_downs(df)
-    df = clean_tendencies(df)
-    df = team(df, team_name, side)
-    df = situation(df, situation_str)
+    df = import_clean_slice(years, weeks, team_name, side, situation_str)
 
     pivot = pd.pivot_table(df, values=['pass','rush'], 
                                 index=['Down', 'distance', side_dict[side]],
