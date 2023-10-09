@@ -71,6 +71,12 @@ def import_clean_slice(years, weeks, team_name, side, situation_str):
 
     return df
 
+def order_pivot(pivot):
+    '''
+        Description:
+    '''
+    pass
+
 def pass_rate_by_personnel(years, weeks, team_name, side, situation_str):
     '''
         Pass and rush rate split by personnel
