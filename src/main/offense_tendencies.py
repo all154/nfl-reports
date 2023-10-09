@@ -165,8 +165,22 @@ def pass_rate_by_personnel_and_formation(years, weeks, team_name, situation_str)
 
     return pivot
 
-def man_in_box_by_personnel():
+def man_in_box_by_personnel(years, weeks, team_name, side, situation_str):
     '''
         Description:
     '''
-    pass
+    side_dict = {
+        'OFF': 'offense_personnel',
+        'DEF': 'defense_personnel'
+    }
+
+    df = import_clean_slice(years, weeks, team_name, side, situation_str)
+
+    pivot = pd.pivot_table(df, values=['defenders_in_box'], 
+                                index=['Down', 'distance', side_dict[side]],
+                                aggfunc={'defenders_in_box': np.mean, 'distance': len},
+                                fill_value=0)
+
+    pivot = order_pivot(pivot)
+
+    return pivot
