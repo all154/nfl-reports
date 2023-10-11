@@ -184,3 +184,9 @@ def man_in_box_by_personnel(years, weeks, team_name, side, situation_str):
     pivot = order_pivot(pivot)
 
     return pivot
+
+def personnel_by_situation(years, weeks, team_name, side, situation_str):
+    '''
+        Description:
+    '''
+    pass
