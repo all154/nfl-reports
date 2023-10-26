@@ -189,4 +189,33 @@ def personnel_by_situation(years, weeks, team_name, side, situation_str):
     '''
         Description:
     '''
-    pass
+    side_dict = {
+        'OFF': 'offense_personnel',
+        'DEF': 'defense_personnel'
+    }
+
+    df = import_clean_slice(years, weeks, team_name, side, situation_str)
+
+    pivot = pd.pivot_table(df, columns=[side_dict[side]], 
+                                index=['Down', 'distance'],
+                                values='play',
+                                aggfunc='count',
+                                fill_value=0)
+    
+    pivot = pivot.divide(pivot.sum(axis=1), axis=0)
+
+    pivot = pivot.dropna(how='all')
+
+    pivot['Play Count'] = df.groupby(['Down', 'distance'])['play'].count()
+
+    cols_over_10 = pivot.columns[pivot.gt(0.10).any()]
+
+    filtered_pivot = pivot[cols_over_10]
+
+    average_proportion = filtered_pivot.mean(axis=0)
+
+    sorted_columns = average_proportion.sort_values(ascending=False).index
+
+    sorted_pivot = filtered_pivot[sorted_columns]
+
+    return sorted_pivot
