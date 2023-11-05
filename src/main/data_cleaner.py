@@ -150,3 +150,17 @@ def create_explosive(df):
     '''
     #TODO
     pass
+
+def create_negatives(df):
+    '''
+        Create negative (binary) category
+
+        df(dataframe): a play by play dataframe from nfl_data_py containing 'play_type' and 'yards_gained' feature
+
+        Returns: a dataframe with 'explosive' feature
+
+        Negatives:
+        Any play with loss of yards (TFL, sack or penalty)
+    '''
+    #TODO
+    pass
