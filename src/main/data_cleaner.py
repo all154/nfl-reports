@@ -135,3 +135,16 @@ def clean_offense_personnel(df):
     '''
     #TODO
     pass
+
+def create_explosive(df):
+    '''
+        Create explosive binary category
+
+        df(dataframe): a play by play dataframe from nfl_data_py containing 'play_type' and 'yards_gained' feature
+
+        Returns: a dataframe with 'explosive' feature
+
+        Explosives:
+        Run of more than 10 yards
+        Pass of more than 15 yards
+    '''
