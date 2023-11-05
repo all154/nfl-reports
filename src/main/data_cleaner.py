@@ -148,8 +148,14 @@ def create_explosive(df):
         Run of more than 10 yards
         Pass of more than 15 yards
     '''
-    #TODO
-    pass
+    df['explosive'] = df.apply(
+    lambda row: 1 if ((row['play_type'] == 'pass') & (row['yards_gained'] >= 15)) |
+                   ((row['play_type'] == 'run') & (row['yards_gained'] >= 10)) else 0, 
+    axis=1
+    )
+    
+    return df
+    
 
 def create_negatives(df):
     '''
