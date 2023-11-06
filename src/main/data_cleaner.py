@@ -157,7 +157,7 @@ def create_explosive(df):
     return df
     
 
-def create_negatives(df):
+def create_negative(df):
     '''
         Create negative (binary) category
 
@@ -168,5 +168,6 @@ def create_negatives(df):
         Negatives:
         Any play with loss of yards (TFL, sack or penalty)
     '''
-    #TODO
-    pass
+    df['negative'] = df.apply(lambda row: 1 if (row['yards_gained'] < 0) else 0, axis=1)
+    
+    return df
