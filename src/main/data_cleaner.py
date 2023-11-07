@@ -176,5 +176,6 @@ def create_turnover(df):
     '''
         Description:
     '''
-    #TODO
-    pass
+    df['turnover'] = df.apply(lambda row: 1 if (row['interception'] == 1) | (row['fumble_lost'] == 1) else 0, axis=1)
+    
+    return df
