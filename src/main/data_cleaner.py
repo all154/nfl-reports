@@ -171,3 +171,10 @@ def create_negative(df):
     df['negative'] = df.apply(lambda row: 1 if (row['yards_gained'] < 0) else 0, axis=1)
     
     return df
+
+def create_turnover(df):
+    '''
+        Description:
+    '''
+    #TODO
+    pass
