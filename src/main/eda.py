@@ -342,20 +342,21 @@ plt.show()
 ########## Explosives-negatives plot ##########
 import pandas as pd
 
-# Assuming `df` is your DataFrame and it's already loaded.
-
-# Aggregate the data by 'posteam', summing up the 'explosives' and 'negatives'.
-# We use 'sum' instead of 'count' because 'explosives' and 'negatives' are binary.
 result_df = df.groupby('posteam').agg({
     'explosive': 'sum',
     'negative': 'sum'
 }).reset_index()
 
-# Order the results by 'explosives' in descending order and then by 'posteam' if you want a secondary sort.
 result_df = result_df.sort_values(by=['explosive', 'negative'], ascending=[False, True])
 
-# Show the resulting DataFrame
 print(result_df)
+
+def_df = df.groupby('defteam').agg({
+    'explosive': 'sum',
+    'negative': 'sum'
+}).reset_index()
+
+print(def_df)
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -383,7 +384,26 @@ for posteam, negative, explosive in zip(result_df['posteam'], result_df['negativ
         ab = AnnotationBbox(imagebox, (negative, explosive), frameon=False)
         ax.add_artist(ab)
 
-# Show plot.
+
+fig2,ax2 = plt.subplots(figsize=(15, 15))
+plt.scatter(def_df['negative'], def_df['explosive'],alpha=0)
+
+negative_avg = def_df['negative'].mean()
+explosive_avg = def_df['explosive'].mean()
+
+plt.axvline(x=negative_avg, color='grey', linestyle='--', linewidth=1)
+plt.axhline(y=explosive_avg, color='grey', linestyle='--', linewidth=1)
+plt.xlabel('Negatives')
+plt.ylabel('Explosives')
+plt.title('Defensive of Explosives vs. Negatives')
+
+for defteam, negative, explosive in zip(def_df['defteam'], def_df['negative'], def_df['explosive']):
+    path = logo_paths.get(defteam)
+    if path:
+        imagebox = getImage(path)
+        ab = AnnotationBbox(imagebox, (negative, explosive), frameon=False)
+        ax2.add_artist(ab)
+
 plt.show()
 
 #######################################################
