@@ -263,26 +263,15 @@ print(result)
 
 import matplotlib.pyplot as plt
 
-# Create a scatter plot with inverted x-axis.
 fig2, ax2 = plt.subplots(figsize=(15,15))
-
-# Scatter plot, using 'negative' for x-axis and 'explosive' for y-axis.
 plt.scatter(result['takeaways'], result['turnovers'], alpha=0)
-
-# Invert the x-axis to have more negatives to the left.
 plt.gca().invert_yaxis()
 
-# Calculate the averages
 negative_avg = result['takeaways'].mean()
 explosive_avg = result['turnovers'].mean()
 
-# Add a vertical dashed line for the negative average.
 plt.axvline(x=negative_avg, color='grey', linestyle='--', linewidth=1)
-
-# Add a horizontal dashed line for the explosive average.
 plt.axhline(y=explosive_avg, color='grey', linestyle='--', linewidth=1)
-
-# Labeling the axes and title.
 plt.xlabel('takeaways')
 plt.ylabel('turnovers')
 plt.title('Scatter Plot of turnovers vs. takeaways')
@@ -294,8 +283,26 @@ for posteam, takeaways, turnovers in zip(result['posteam'], result['takeaways'],
         ab = AnnotationBbox(imagebox, (takeaways, turnovers), frameon=False)
         ax2.add_artist(ab)
 
+fig3, ax3 = plt.subplots(figsize=(15,15))
+plt.scatter(result['takeaway_rate'], result['turnover_rate'], alpha=0)
+#plt.gca().invert_yaxis()
 
-# Show plot.
+takeaways_rate_avg = result['takeaway_rate'].mean()
+turnover_rate_avg = result['turnover_rate'].mean()
+
+plt.axvline(x=takeaways_rate_avg, color='grey', linestyle='--', linewidth=1)
+plt.axhline(y=turnover_rate_avg, color='grey', linestyle='--', linewidth=1)
+plt.xlabel('takeaway_rate')
+plt.ylabel('turnover_rate')
+plt.title('Scatter Plot of turnovers vs. takeaways')
+
+for posteam, takeaway_rate, turnover_rate in zip(result['posteam'], result['takeaway_rate'], result['turnover_rate']):
+    path = logo_paths.get(posteam)
+    if path:
+        imagebox = getImage(path)
+        ab = AnnotationBbox(imagebox, (takeaway_rate, turnover_rate), frameon=False)
+        ax3.add_artist(ab)
+
 plt.show()
 ###############################################
 
