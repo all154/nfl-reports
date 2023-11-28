@@ -172,7 +172,7 @@ print(early_sorted)
 ######################################################
 '''
 
-
+'''
 ############## Red zone plot #########################
 
 redzone_drives = df[df['drive_inside20'] == 1]
@@ -216,15 +216,6 @@ for posteam, visits, points in zip(merged_df['posteam'], merged_df['visits'], me
         ab = AnnotationBbox(imagebox, (visits, points), frameon=False)
         ax.add_artist(ab)
 
-'''
-# Label each point with its team identifier
-for i in range(len(merged_df)):
-    plt.text(x=merged_df['visits'][i]+0.2,  # X location of label
-             y=merged_df['points'][i],       # Y location of label
-             s=merged_df['posteam'][i],      # Team abbreviation
-             fontdict=dict(color='red', size=10),
-             bbox=dict(facecolor='yellow', alpha=0.5, pad=1))
-'''
 # Set the title and labels of the plot
 plt.title('Redzone Visits vs Points')
 plt.xlabel('Redzone Visits')
@@ -238,7 +229,7 @@ merged_df = merged_df.sort_values(by='points_per_visit',ascending=False)
 print(merged_df)
 
 #############################################################################
-
+'''
 
 
 #################### Turnovers takeaways plot ###############################
@@ -248,6 +239,7 @@ import pandas as pd
 
 # First, calculate the turnovers by 'posteam'
 turnovers = df.groupby('posteam')['turnover'].sum().reset_index(name='turnovers')
+off_plays = df.groupby('posteam')['play'].sum().reset_index(name='off_plays')
 
 # Then, calculate the takeaways by 'defteam'
 takeaways = df.groupby('defteam')['turnover'].sum().reset_index(name='takeaways')
@@ -257,17 +249,17 @@ result = pd.merge(turnovers, takeaways, left_on='posteam', right_on='defteam', h
 
 # If you want to keep only the 'posteam' and 'takeaways' in the final result
 # and rename 'posteam' to 'team' for clarity after the join
-result = result[['posteam', 'turnovers', 'takeaways']].rename(columns={'posteam': 'team'})
+result = result[['posteam', 'turnovers', 'takeaways']]
 
 print(result)
 
 import matplotlib.pyplot as plt
 
 # Create a scatter plot with inverted x-axis.
-plt.figure(figsize=(10, 6))
+fig2, ax2 = plt.subplots(figsize=(15,15))
 
 # Scatter plot, using 'negative' for x-axis and 'explosive' for y-axis.
-plt.scatter(result['takeaways'], result['turnovers'])
+plt.scatter(result['takeaways'], result['turnovers'], alpha=0)
 
 # Invert the x-axis to have more negatives to the left.
 plt.gca().invert_yaxis()
@@ -288,8 +280,16 @@ plt.ylabel('turnovers')
 plt.title('Scatter Plot of turnovers vs. takeaways')
 
 # Optional: Annotate each point with the 'posteam' name.
-for i, row in result.iterrows():
-    plt.text(row['takeaways'], row['turnovers'], row['team'], fontsize=9)
+#for i, row in result.iterrows():
+#    plt.text(row['takeaways'], row['turnovers'], row['team'], fontsize=9)
+
+for posteam, takeaways, turnovers in zip(result['posteam'], result['takeaways'], result['turnovers']):
+    path = logo_paths.get(posteam)
+    if path:
+        imagebox = getImage(path)
+        ab = AnnotationBbox(imagebox, (takeaways, turnovers), frameon=False)
+        ax2.add_artist(ab)
+
 
 # Show plot.
 plt.show()
