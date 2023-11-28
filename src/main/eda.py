@@ -241,16 +241,21 @@ import pandas as pd
 turnovers = df.groupby('posteam')['turnover'].sum().reset_index(name='turnovers')
 off_plays = df.groupby('posteam')['play'].sum().reset_index(name='off_plays') 
 #TODO: play include penalties. Change to only run and pass
+off_drives = df.groupby('posteam')['drive_play_id_ended'].nunique().reset_index(name='off_drives')
 
 # Then, calculate the takeaways by 'defteam'
 takeaways = df.groupby('defteam')['turnover'].sum().reset_index(name='takeaways')
 def_plays = df.groupby('defteam')['play'].sum().reset_index(name='def_plays')
+def_drives = df.groupby('defteam')['drive_play_id_ended'].nunique().reset_index(name='def_drives')
 
 # Now, merge the two DataFrames on 'posteam' and 'defteam'
 result_r = pd.merge(turnovers, off_plays, on='posteam', how='left')
-result_l = pd.merge(takeaways, def_plays, on='defteam', how='left')
+result_off = pd.merge(result_r, off_drives, on='posteam', how='left')
 
-result = pd.merge(result_r, result_l, left_on='posteam', right_on='defteam', how='left')
+result_l = pd.merge(takeaways, def_plays, on='defteam', how='left')
+result_def = pd.merge(result_l, def_drives, on='defteam', how='left')
+
+result = pd.merge(result_off, result_def, left_on='posteam', right_on='defteam', how='left')
 
 # If you want to keep only the 'posteam' and 'takeaways' in the final result
 # and rename 'posteam' to 'team' for clarity after the join
@@ -259,10 +264,14 @@ result = pd.merge(result_r, result_l, left_on='posteam', right_on='defteam', how
 result['turnover_rate'] = result['turnovers'] / result['off_plays']
 result['takeaway_rate'] = result['takeaways'] / result['def_plays']
 
+result['turnover_perc'] = result['turnovers'] / result['off_drives']*100
+result['takeaway_perc'] = result['takeaways'] / result['def_drives']*100
+
 print(result)
 
 import matplotlib.pyplot as plt
 
+### turnover
 fig2, ax2 = plt.subplots(figsize=(15,15))
 plt.scatter(result['takeaways'], result['turnovers'], alpha=0)
 plt.gca().invert_yaxis()
@@ -283,6 +292,7 @@ for posteam, takeaways, turnovers in zip(result['posteam'], result['takeaways'],
         ab = AnnotationBbox(imagebox, (takeaways, turnovers), frameon=False)
         ax2.add_artist(ab)
 
+###turnover rate
 fig3, ax3 = plt.subplots(figsize=(15,15))
 plt.scatter(result['takeaway_rate'], result['turnover_rate'], alpha=0)
 #plt.gca().invert_yaxis()
