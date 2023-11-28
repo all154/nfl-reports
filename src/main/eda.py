@@ -270,7 +270,7 @@ result['takeaway_perc'] = result['takeaways'] / result['def_drives']*100
 print(result)
 
 import matplotlib.pyplot as plt
-
+'''
 ### turnover
 fig2, ax2 = plt.subplots(figsize=(15,15))
 plt.scatter(result['takeaways'], result['turnovers'], alpha=0)
@@ -312,6 +312,27 @@ for posteam, takeaway_rate, turnover_rate in zip(result['posteam'], result['take
         imagebox = getImage(path)
         ab = AnnotationBbox(imagebox, (takeaway_rate, turnover_rate), frameon=False)
         ax3.add_artist(ab)
+'''
+### turnover perc
+fig4, ax4 = plt.subplots(figsize=(15,15))
+plt.scatter(result['takeaway_perc'], result['turnover_perc'], alpha=0)
+#plt.gca().invert_yaxis()
+
+takeaway_perc_avg = result['takeaway_perc'].mean()
+turnover_perc_avg = result['turnover_perc'].mean()
+
+plt.axvline(x=takeaway_perc_avg, color='grey', linestyle='--', linewidth=1)
+plt.axhline(y=turnover_perc_avg, color='grey', linestyle='--', linewidth=1)
+plt.xlabel('takeaways')
+plt.ylabel('turnovers')
+plt.title('Scatter Plot of turnovers vs. takeaways')
+
+for posteam, takeaway_perc, turnover_perc in zip(result['posteam'], result['takeaway_perc'], result['turnover_perc']):
+    path = logo_paths.get(posteam)
+    if path:
+        imagebox = getImage(path)
+        ab = AnnotationBbox(imagebox, (takeaway_perc, turnover_perc), frameon=False)
+        ax4.add_artist(ab)
 
 plt.show()
 ###############################################
