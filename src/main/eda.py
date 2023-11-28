@@ -239,17 +239,25 @@ import pandas as pd
 
 # First, calculate the turnovers by 'posteam'
 turnovers = df.groupby('posteam')['turnover'].sum().reset_index(name='turnovers')
-off_plays = df.groupby('posteam')['play'].sum().reset_index(name='off_plays')
+off_plays = df.groupby('posteam')['play'].sum().reset_index(name='off_plays') 
+#TODO: play include penalties. Change to only run and pass
 
 # Then, calculate the takeaways by 'defteam'
 takeaways = df.groupby('defteam')['turnover'].sum().reset_index(name='takeaways')
+def_plays = df.groupby('defteam')['play'].sum().reset_index(name='def_plays')
 
 # Now, merge the two DataFrames on 'posteam' and 'defteam'
-result = pd.merge(turnovers, takeaways, left_on='posteam', right_on='defteam', how='left')
+result_r = pd.merge(turnovers, off_plays, on='posteam', how='left')
+result_l = pd.merge(takeaways, def_plays, on='defteam', how='left')
+
+result = pd.merge(result_r, result_l, left_on='posteam', right_on='defteam', how='left')
 
 # If you want to keep only the 'posteam' and 'takeaways' in the final result
 # and rename 'posteam' to 'team' for clarity after the join
-result = result[['posteam', 'turnovers', 'takeaways']]
+#result = result[['posteam', 'turnovers','takeaways']]
+
+result['turnover_rate'] = result['turnovers'] / result['off_plays']
+result['takeaway_rate'] = result['takeaways'] / result['def_plays']
 
 print(result)
 
@@ -278,10 +286,6 @@ plt.axhline(y=explosive_avg, color='grey', linestyle='--', linewidth=1)
 plt.xlabel('takeaways')
 plt.ylabel('turnovers')
 plt.title('Scatter Plot of turnovers vs. takeaways')
-
-# Optional: Annotate each point with the 'posteam' name.
-#for i, row in result.iterrows():
-#    plt.text(row['takeaways'], row['turnovers'], row['team'], fontsize=9)
 
 for posteam, takeaways, turnovers in zip(result['posteam'], result['takeaways'], result['turnovers']):
     path = logo_paths.get(posteam)
