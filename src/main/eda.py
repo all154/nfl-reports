@@ -360,33 +360,18 @@ print(result_df)
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Assuming `df` is your DataFrame containing the team stats
-# and `teams_df` is your DataFrame containing the team logos
-
 #teams_df=nfl.import_team_desc()              <<<<<<<<<<<<<
 
 import matplotlib.pyplot as plt
 
-# Create a scatter plot with inverted x-axis.
 fig,ax = plt.subplots(figsize=(15, 15))
-
-# Scatter plot, using 'negative' for x-axis and 'explosive' for y-axis.
 plt.scatter(result_df['negative'], result_df['explosive'],alpha=0)
 
-# Invert the x-axis to have more negatives to the left.
-#plt.gca().invert_xaxis()
-
-# Calculate the averages
 negative_avg = result_df['negative'].mean()
 explosive_avg = result_df['explosive'].mean()
 
-# Add a vertical dashed line for the negative average.
 plt.axvline(x=negative_avg, color='grey', linestyle='--', linewidth=1)
-
-# Add a horizontal dashed line for the explosive average.
 plt.axhline(y=explosive_avg, color='grey', linestyle='--', linewidth=1)
-
-# Labeling the axes and title.
 plt.xlabel('Negatives')
 plt.ylabel('Explosives')
 plt.title('Scatter Plot of Explosives vs. Negatives')
