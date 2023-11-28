@@ -338,7 +338,7 @@ plt.show()
 ###############################################
 
 
-'''
+
 ########## Explosives-negatives plot ##########
 import pandas as pd
 
@@ -363,18 +363,18 @@ import matplotlib.pyplot as plt
 # Assuming `df` is your DataFrame containing the team stats
 # and `teams_df` is your DataFrame containing the team logos
 
-teams_df=nfl.import_team_desc()
+#teams_df=nfl.import_team_desc()              <<<<<<<<<<<<<
 
 import matplotlib.pyplot as plt
 
 # Create a scatter plot with inverted x-axis.
-plt.figure(figsize=(10, 6))
+fig,ax = plt.subplots(figsize=(15, 15))
 
 # Scatter plot, using 'negative' for x-axis and 'explosive' for y-axis.
-plt.scatter(result_df['negative'], result_df['explosive'])
+plt.scatter(result_df['negative'], result_df['explosive'],alpha=0)
 
 # Invert the x-axis to have more negatives to the left.
-plt.gca().invert_xaxis()
+#plt.gca().invert_xaxis()
 
 # Calculate the averages
 negative_avg = result_df['negative'].mean()
@@ -391,15 +391,18 @@ plt.xlabel('Negatives')
 plt.ylabel('Explosives')
 plt.title('Scatter Plot of Explosives vs. Negatives')
 
-# Optional: Annotate each point with the 'posteam' name.
-for i, row in result_df.iterrows():
-    plt.text(row['negative'], row['explosive'], row['posteam'], fontsize=9)
+for posteam, negative, explosive in zip(result_df['posteam'], result_df['negative'], result_df['explosive']):
+    path = logo_paths.get(posteam)
+    if path:
+        imagebox = getImage(path)
+        ab = AnnotationBbox(imagebox, (negative, explosive), frameon=False)
+        ax.add_artist(ab)
 
 # Show plot.
 plt.show()
 
 #######################################################
-'''
+
 
 
 '''
