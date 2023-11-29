@@ -328,10 +328,44 @@ plt.gca().spines['right'].set_visible(False)
 plt.gca().spines['bottom'].set_color('gray')
 plt.gca().spines['left'].set_color('gray')
 plt.tick_params(axis='both', colors='gray', which='both')
-plt.xlabel('Percentage of drives ended with takeaway')
-plt.ylabel('Percentage of drives ended with turnover')
-plt.title('Percentage of Drives with turnovers and takeaways')
+plt.xlabel('Takeaway Rate (%)', color='gray')
+plt.ylabel('Turnover Rate (%)', loc='top', color='gray')
 
+plt.plot(takeaway_perc_avg, turnover_perc_avg, 'o', color='gray', label='Ideal Point', alpha=1, markersize=5)
+plt.annotate('League Average', (takeaway_perc_avg, turnover_perc_avg),
+             textcoords="offset points", 
+             xytext=(4,5), 
+             ha='left',
+             fontsize=10,
+             color='gray')
+
+plt.text(3.8, 20, 'Analyzing Team Performance in Turnovers and Takeaways in the NFL',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=18, color='black', zorder=5)
+
+plt.text(3.8, 19.5, 'How Contenders Stack Up in 2023 Through Week 12',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=12, color='black', zorder=5)
+
+plt.text(3.8, 4.6, 'Turnover Rate refers to the percentage of offensive drives that end in turnovers, indicating challenges in maintaining possession.',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=10, color='black', zorder=5)
+plt.text(3.8, 4.3, 'Takeaway Rate is the percentage of defensive drives resulting in takeaways, reflecting defensive success in regaining possession.',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=10, color='black', zorder=5)
+
+plt.text(20, 8, 'High Takeaway, Low Turnover\n(Better)', 
+         horizontalalignment='right', verticalalignment='center', 
+         fontsize=14, color='darkblue', zorder=5)
+
+plt.text(7.75, 17.5, 'Low Takeaway, High Turnover\n(Worse)', 
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=14, color='red', zorder=5)
+'''
+plt.text(12.8, 6.5, 'High Takeaway, Low Turnover\n(Better)', 
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=14, color='blue', zorder=5)
+'''
 for posteam, takeaway_perc, turnover_perc in zip(result['posteam'], result['takeaway_perc'], result['turnover_perc']):
     path = logo_paths.get(posteam)
     if path:
@@ -339,11 +373,11 @@ for posteam, takeaway_perc, turnover_perc in zip(result['posteam'], result['take
         ab = AnnotationBbox(imagebox, (takeaway_perc, turnover_perc), frameon=False)
         ax4.add_artist(ab)
 
-#plt.show()
+plt.show()
 ###############################################
 
 
-
+'''
 ########## Explosives-negatives plot ##########
 import pandas as pd
 
@@ -412,7 +446,7 @@ for defteam, negative, explosive in zip(def_df['defteam'], def_df['negative'], d
 plt.show()
 
 #######################################################
-
+'''
 
 
 '''
