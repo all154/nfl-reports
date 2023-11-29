@@ -323,9 +323,14 @@ turnover_perc_avg = result['turnover_perc'].mean()
 
 plt.axvline(x=takeaway_perc_avg, color='grey', linestyle='--', linewidth=1)
 plt.axhline(y=turnover_perc_avg, color='grey', linestyle='--', linewidth=1)
-plt.xlabel('takeaways')
-plt.ylabel('turnovers')
-plt.title('Scatter Plot of turnovers vs. takeaways')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['bottom'].set_color('gray')
+plt.gca().spines['left'].set_color('gray')
+plt.tick_params(axis='both', colors='gray', which='both')
+plt.xlabel('Percentage of drives ended with takeaway')
+plt.ylabel('Percentage of drives ended with turnover')
+plt.title('Percentage of Drives with turnovers and takeaways')
 
 for posteam, takeaway_perc, turnover_perc in zip(result['posteam'], result['takeaway_perc'], result['turnover_perc']):
     path = logo_paths.get(posteam)
@@ -334,7 +339,7 @@ for posteam, takeaway_perc, turnover_perc in zip(result['posteam'], result['take
         ab = AnnotationBbox(imagebox, (takeaway_perc, turnover_perc), frameon=False)
         ax4.add_artist(ab)
 
-plt.show()
+#plt.show()
 ###############################################
 
 
