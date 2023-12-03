@@ -231,7 +231,7 @@ print(merged_df)
 #############################################################################
 '''
 
-
+'''
 #################### Turnovers takeaways plot ###############################
 import pandas as pd
 
@@ -270,49 +270,7 @@ result['takeaway_perc'] = result['takeaways'] / result['def_drives']*100
 print(result)
 
 import matplotlib.pyplot as plt
-'''
-### turnover
-fig2, ax2 = plt.subplots(figsize=(15,15))
-plt.scatter(result['takeaways'], result['turnovers'], alpha=0)
-plt.gca().invert_yaxis()
 
-negative_avg = result['takeaways'].mean()
-explosive_avg = result['turnovers'].mean()
-
-plt.axvline(x=negative_avg, color='grey', linestyle='--', linewidth=1)
-plt.axhline(y=explosive_avg, color='grey', linestyle='--', linewidth=1)
-plt.xlabel('takeaways')
-plt.ylabel('turnovers')
-plt.title('Scatter Plot of turnovers vs. takeaways')
-
-for posteam, takeaways, turnovers in zip(result['posteam'], result['takeaways'], result['turnovers']):
-    path = logo_paths.get(posteam)
-    if path:
-        imagebox = getImage(path)
-        ab = AnnotationBbox(imagebox, (takeaways, turnovers), frameon=False)
-        ax2.add_artist(ab)
-
-###turnover rate
-fig3, ax3 = plt.subplots(figsize=(15,15))
-plt.scatter(result['takeaway_rate'], result['turnover_rate'], alpha=0)
-#plt.gca().invert_yaxis()
-
-takeaways_rate_avg = result['takeaway_rate'].mean()
-turnover_rate_avg = result['turnover_rate'].mean()
-
-plt.axvline(x=takeaways_rate_avg, color='grey', linestyle='--', linewidth=1)
-plt.axhline(y=turnover_rate_avg, color='grey', linestyle='--', linewidth=1)
-plt.xlabel('takeaway_rate')
-plt.ylabel('turnover_rate')
-plt.title('Scatter Plot of turnovers vs. takeaways')
-
-for posteam, takeaway_rate, turnover_rate in zip(result['posteam'], result['takeaway_rate'], result['turnover_rate']):
-    path = logo_paths.get(posteam)
-    if path:
-        imagebox = getImage(path)
-        ab = AnnotationBbox(imagebox, (takeaway_rate, turnover_rate), frameon=False)
-        ax3.add_artist(ab)
-'''
 ### turnover perc
 fig4, ax4 = plt.subplots(figsize=(15,15))
 plt.scatter(result['takeaway_perc'], result['turnover_perc'], alpha=0)
@@ -361,11 +319,7 @@ plt.text(20, 8, 'High Takeaway, Low Turnover\n(Better)',
 plt.text(7.75, 17.5, 'Low Takeaway, High Turnover\n(Worse)', 
          horizontalalignment='left', verticalalignment='center', 
          fontsize=14, color='red', zorder=5)
-'''
-plt.text(12.8, 6.5, 'High Takeaway, Low Turnover\n(Better)', 
-         horizontalalignment='left', verticalalignment='center', 
-         fontsize=14, color='blue', zorder=5)
-'''
+
 for posteam, takeaway_perc, turnover_perc in zip(result['posteam'], result['takeaway_perc'], result['turnover_perc']):
     path = logo_paths.get(posteam)
     if path:
@@ -375,7 +329,7 @@ for posteam, takeaway_perc, turnover_perc in zip(result['posteam'], result['take
 
 plt.show()
 ###############################################
-
+'''
 
 '''
 ########## Explosives-negatives plot ##########
