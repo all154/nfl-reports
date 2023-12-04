@@ -60,7 +60,7 @@ def getImage(path, resize=True, max_length=40):
     return OffsetImage(img, zoom=1)  
 
 
-df = nfl.import_pbp_data(list(range(2022, 2024)), downcast=True, cache=False, alt_path=None)
+df = nfl.import_pbp_data(list(range(2012, 2024)), downcast=True, cache=False, alt_path=None)
 df = df[df['week'] <= 12]
 df = create_explosive(df)
 df = create_negative(df)
@@ -77,6 +77,8 @@ result_df = df.groupby(['posteam', 'season']).agg({
 }).reset_index()
 
 result_df = result_df.sort_values(by=['explosive', 'negative'], ascending=[False, True])
+mask = ~((result_df['negative'] == 118) & (result_df['explosive'] == 71))
+filtered_df = result_df[mask]
 
 print(result_df)
 
@@ -84,7 +86,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 fig,ax = plt.subplots(figsize=(15, 15))
-plt.scatter(result_df['negative'], result_df['explosive'],alpha=1)
+plt.scatter(result_df['negative'], result_df['explosive'],alpha=0)
+plt.scatter(filtered_df['negative'], filtered_df['explosive'],alpha=1)
 
 negative_avg = result_df['negative'].mean()
 explosive_avg = result_df['explosive'].mean()
@@ -94,13 +97,21 @@ plt.axhline(y=explosive_avg, color='grey', linestyle='--', linewidth=1)
 plt.xlabel('Negatives')
 plt.ylabel('Explosives')
 plt.title('Scatter Plot of Explosives vs. Negatives')
-
+'''
 for posteam, negative, explosive in zip(result_df['posteam'], result_df['negative'], result_df['explosive']):
     path = logo_paths.get(posteam)
     if path:
         imagebox = getImage(path)
         ab = AnnotationBbox(imagebox, (negative, explosive), frameon=False)
         ax.add_artist(ab)
+'''
+
+negative = result_df['negative'][(result_df['posteam']=='NYG')&(result_df['season']==2023)]
+explosive = result_df['explosive'][(result_df['posteam']=='NYG')&(result_df['season']==2023)]
+
+imagebox = getImage(logo_paths.get('NYG'))
+ab = AnnotationBbox(imagebox, (negative, explosive), frameon=False)
+ax.add_artist(ab)
 
 plt.show()
 
