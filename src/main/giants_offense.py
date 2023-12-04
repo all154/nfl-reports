@@ -77,8 +77,8 @@ result_df = df.groupby(['posteam', 'season']).agg({
 }).reset_index()
 
 result_df = result_df.sort_values(by=['explosive', 'negative'], ascending=[False, True])
-mask = ~((result_df['negative'] == 118) & (result_df['explosive'] == 71))
-filtered_df = result_df[mask]
+mask = ((result_df['posteam']=='NYG')&(result_df['season']==2023))
+filtered_df = result_df[~mask]
 
 plot_df = filtered_df.groupby(['explosive', 'negative']).size().reset_index(name='count')
 
@@ -99,12 +99,17 @@ explosive_avg = result_df['explosive'].mean()
 
 plt.axvline(x=negative_avg, color='grey', linestyle='--', linewidth=1)
 plt.axhline(y=explosive_avg, color='grey', linestyle='--', linewidth=1)
-plt.xlabel('Negatives')
-plt.ylabel('Explosives')
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+plt.gca().spines['bottom'].set_color('gray')
+plt.gca().spines['left'].set_color('gray')
+plt.tick_params(axis='both', colors='gray', which='both')
+plt.xlabel('Negatives', color='gray')
+plt.ylabel('Explosives', loc='top', color='gray')
 plt.title('Scatter Plot of Explosives vs. Negatives')
 
-negative = result_df['negative'][(result_df['posteam']=='NYG')&(result_df['season']==2023)]
-explosive = result_df['explosive'][(result_df['posteam']=='NYG')&(result_df['season']==2023)]
+negative = result_df['negative'][mask]
+explosive = result_df['explosive'][mask]
 
 imagebox = getImage(logo_paths.get('NYG'))
 ab = AnnotationBbox(imagebox, (negative, explosive), frameon=False)
