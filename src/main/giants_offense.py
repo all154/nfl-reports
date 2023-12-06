@@ -91,7 +91,7 @@ import matplotlib.pyplot as plt
 
 fig,ax = plt.subplots(figsize=(15, 15))
 plt.scatter(result_df['negative'], result_df['explosive'],alpha=0)
-plt.scatter(plot_df['negative'], plot_df['explosive'],alpha=1, s=20*plot_df['count'], color='blue')
+plt.scatter(plot_df['negative'], plot_df['explosive'],alpha=1, s=30*plot_df['count'], color='blue')
 
 
 negative_avg = result_df['negative'].mean()
@@ -106,7 +106,43 @@ plt.gca().spines['left'].set_color('gray')
 plt.tick_params(axis='both', colors='gray', which='both')
 plt.xlabel('Negatives', color='gray')
 plt.ylabel('Explosives', loc='top', color='gray')
-plt.title('Scatter Plot of Explosives vs. Negatives')
+
+y_label_ax_pos = ax.get_yaxis().get_label().get_position()
+
+# Get the bounding box of the axis in figure coordinates
+bbox = ax.get_window_extent().transformed(plt.gcf().transFigure.inverted())
+
+# Calculate the position of the y-label in figure coordinates
+y_label_fig_x = bbox.x0 + (y_label_ax_pos[0] * bbox.width)
+y_label_fig_y = bbox.y0 + (y_label_ax_pos[1] * bbox.height)
+
+horizontal_offset = -0.038
+vertical_offset_for_title = 0.035
+vertical_offset_for_subtitle = 0.015 #create logic using figure and font size
+
+# Title
+plt.text(y_label_fig_x + horizontal_offset, y_label_fig_y + vertical_offset_for_title, 
+         'Historical Struggles of the 2023 Giants Offense',
+         horizontalalignment='left', fontsize=18, color='black', zorder=5, 
+         transform=plt.gcf().transFigure)
+
+# Subtitle
+plt.text(y_label_fig_x + horizontal_offset, y_label_fig_y + vertical_offset_for_subtitle, 
+         'Alone in Adversity - Charting the Worst Performance in Two Decades Up to Week 12',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=12, color='black', zorder=5, 
+         transform=plt.gcf().transFigure)
+
+#Footnotes
+plt.text(28, 40, 'Explosives: This category represents offensive plays resulting in significant yardage gains, specifically runs of more than 10 yards and passes exceeding 15 yards.',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=10, color='black', zorder=5)
+plt.text(28, 38, 'Negatives: This metric tracks offensive plays that resulted in a loss of yards, including both sacks and tackles for loss (TFLs).',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=10, color='black', zorder=5)
+plt.text(28, 36, 'Data Source: Data for this plot has been compiled from official NFL play-by-play records, covering the last 20 seasons up to week 12, inclusive of the 2023 season.',
+         horizontalalignment='left', verticalalignment='center', 
+         fontsize=10, color='black', zorder=5)
 
 negative = result_df['negative'][mask]
 explosive = result_df['explosive'][mask]
