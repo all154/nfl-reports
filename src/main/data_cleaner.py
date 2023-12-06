@@ -169,7 +169,7 @@ def create_negative(df):
         Negatives:
         Any play with loss of yards (TFL, sack or penalty)
     '''
-    df['negative'] = df.apply(lambda row: 1 if (row['yards_gained'] < 0) else 0, axis=1)
+    df['negative'] = df.apply(lambda row: 1 if (row['yards_gained'] < 0) & (row['play'] == 1) else 0, axis=1)
     
     return df
 
