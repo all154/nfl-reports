@@ -59,7 +59,6 @@ def getImage(path, resize=True, max_length=40):
         img = plt.imread(path)
     return OffsetImage(img, zoom=1)  
 
-
 df = nfl.import_pbp_data(list(range(2004, 2024)), downcast=True, cache=False, alt_path=None)
 df = df[df['week'] <= 12]
 df = create_explosive(df)
@@ -151,6 +150,10 @@ explosive = result_df['explosive'][mask]
 imagebox = getImage(logo_paths.get('NYG'))
 ab = AnnotationBbox(imagebox, (negative, explosive), frameon=False)
 ax.add_artist(ab)
+
+plt.text(negative + 5, explosive - 8, 'Lots of Negatives\nFewer Explosives', 
+         horizontalalignment='right', verticalalignment='center', 
+         fontsize=14, color='red', zorder=5)
 
 plt.show()
 
