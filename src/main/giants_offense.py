@@ -60,7 +60,7 @@ def getImage(path, resize=True, max_length=40):
     return OffsetImage(img, zoom=1)  
 
 
-df = nfl.import_pbp_data(list(range(2023, 2024)), downcast=True, cache=False, alt_path=None)
+df = nfl.import_pbp_data(list(range(2004, 2024)), downcast=True, cache=False, alt_path=None)
 df = df[df['week'] <= 12]
 df = create_explosive(df)
 df = create_negative(df)
@@ -83,8 +83,6 @@ filtered_df = result_df[~mask]
 plot_df = filtered_df.groupby(['explosive', 'negative']).size().reset_index(name='count')
 
 plot_df = plot_df.sort_values(by='count')
-
-print(plot_df)
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -133,16 +131,32 @@ plt.text(y_label_fig_x + horizontal_offset, y_label_fig_y + vertical_offset_for_
          fontsize=12, color='black', zorder=5, 
          transform=plt.gcf().transFigure)
 
-#Footnotes
-plt.text(28, 40, 'Explosives: This category represents offensive plays resulting in significant yardage gains, specifically runs of more than 10 yards and passes exceeding 15 yards.',
-         horizontalalignment='left', verticalalignment='center', 
-         fontsize=10, color='black', zorder=5)
-plt.text(28, 38, 'Negatives: This metric tracks offensive plays that resulted in a loss of yards, including both sacks and tackles for loss (TFLs).',
-         horizontalalignment='left', verticalalignment='center', 
-         fontsize=10, color='black', zorder=5)
-plt.text(28, 36, 'Data Source: Data for this plot has been compiled from official NFL play-by-play records, covering the last 20 seasons up to week 12, inclusive of the 2023 season.',
-         horizontalalignment='left', verticalalignment='center', 
-         fontsize=10, color='black', zorder=5)
+# Get the bounding box of the axis in figure coordinates
+bbox = ax.get_window_extent().transformed(plt.gcf().transFigure.inverted())
+
+# Define the starting position for the footnotes
+footnote_start_x = bbox.x0  # Left edge of the axes
+footnote_start_y = bbox.y0  # Bottom edge of the axes
+
+# Define the offsets
+horizontal_offset = -0.02  # Adjust as needed
+vertical_offset = -0.06
+vertical_offset_per_line = 0.02  # Adjust as needed
+
+# Footnotes
+footnote_texts = [
+    'Explosives: This category represents offensive plays resulting in significant yardage gains, specifically runs of more than 10 yards and passes exceeding 15 yards.',
+    'Negatives: This metric tracks offensive plays that resulted in a loss of yards, including both sacks and tackles for loss (TFLs).',
+    'Data Source: Data for this plot has been compiled from official NFL play-by-play records, covering the last 20 seasons up to week 12, inclusive of the 2023 season.'
+]
+
+# Loop through each line of text and position it dynamically
+for i, text in enumerate(footnote_texts):
+    plt.text(footnote_start_x + horizontal_offset, 
+             footnote_start_y + vertical_offset - i * vertical_offset_per_line, text,
+             horizontalalignment='left', verticalalignment='center', 
+             fontsize=10, color='gray', zorder=5, 
+             transform=plt.gcf().transFigure)
 
 negative = result_df['negative'][mask]
 explosive = result_df['explosive'][mask]
